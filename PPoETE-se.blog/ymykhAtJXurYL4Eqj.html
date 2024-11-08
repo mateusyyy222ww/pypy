@@ -1,0 +1,460 @@
+<html><head><base href="." target="_blank"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Escolar Interativo</title>
+<style>
+:root {
+    --primary: #2c3e50;
+    --secondary: #e74c3c;
+    --accent: #3498db;
+    --light: #ecf0f1;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    background: var(--light);
+    color: var(--primary);
+}
+
+.particle-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.header {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    padding: 3rem;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    animation: fadeInDown 1s ease-out;
+}
+
+.header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    animation: fadeInUp 1s ease-out;
+}
+
+.floating-menu {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 100;
+}
+
+.floating-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, var(--secondary), var(--accent));
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.floating-button:hover {
+    transform: scale(1.1);
+}
+
+.content {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.post {
+    border-left: 5px solid var(--accent);
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.post:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.post.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.post-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+.post-meta {
+    flex: 1;
+}
+
+.post-author {
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.post-date {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.post-content {
+    line-height: 1.6;
+}
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.media-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.media-item:hover {
+    transform: scale(1.05);
+}
+
+.media-item img, .media-item video {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.media-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.upload-section {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+}
+
+.upload-button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.upload-button:hover {
+    background: #2980b9;
+}
+
+.reactions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.reaction-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.reaction-button:hover {
+    color: var(--secondary);
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dark-mode {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.dark-mode .post {
+    background: #2d2d2d;
+    color: #fff;
+}
+
+.theme-toggle {
+    position: fixed;
+    left: 2rem;
+    bottom: 2rem;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    background: linear-gradient(45deg, var(--primary), var(--accent));
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.theme-toggle:hover {
+    background: var(--accent);
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <div id="particles-js" class="particle-background"></div>
+    
+    <div class="header">
+        <h1>Blog Escolar Interativo</h1>
+        <p>Compartilhe seus trabalhos, ideias e descobertas</p>
+    </div>
+
+    <div class="content">
+        <div class="post" id="post1">
+            <div class="post-header">
+                <svg class="post-avatar" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="25" fill="#3498db"/>
+                    <circle cx="25" cy="20" r="8" fill="#fff"/>
+                    <path d="M25 30 Q25 40 40 45 H10 Q25 40 25 30" fill="#fff"/>
+                </svg>
+                <div class="post-meta">
+                    <div class="post-author">Maria Silva</div>
+                    <div class="post-date">Há 1 hora</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>Meu projeto de ciências sobre energia renovável:</p>
+                <div class="media-grid">
+                    <div class="media-item">
+                        <img alt="maquete de energia solar com painéis solares em miniatura" src="https://example.com/energia-solar.jpg" width="300" height="200">
+                        <div class="media-caption">Maquete de Energia Solar</div>
+                    </div>
+                    <div class="media-item">
+                        <video controls width="300" height="200">
+                            <source src="https://example.com/apresentacao.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeos.
+                        </video>
+                        <div class="media-caption">Apresentação do Projeto</div>
+                    </div>
+                </div>
+            </div>
+            <div class="reactions">
+                <button class="reaction-button" onclick="react(this)">
+                    ⭐ <span class="count">0</span>
+                </button>
+                <button class="reaction-button" onclick="react(this)">
+                    🎓 <span class="count">0</span>
+                </button>
+                <button class="reaction-button" onclick="react(this)">
+                    👏 <span class="count">0</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="floating-button" onclick="addNewPost()">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+    </button>
+
+    <button class="theme-toggle" onclick="toggleTheme()">Mudar Tema</button>
+
+    <script>
+    function react(button) {
+        const countSpan = button.querySelector('.count');
+        let count = parseInt(countSpan.textContent);
+        countSpan.textContent = count + 1;
+        
+        button.style.transform = 'scale(1.2)';
+        setTimeout(() => button.style.transform = 'scale(1)', 200);
+    }
+
+    function addNewPost() {
+        const content = document.querySelector('.content');
+        const post = document.createElement('div');
+        post.className = 'post';
+        
+        const now = new Date();
+        const timeString = 'Agora mesmo';
+        
+        post.innerHTML = `
+            <div class="post-header">
+                <svg class="post-avatar" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="25" fill="${getRandomColor()}"/>
+                    <circle cx="25" cy="20" r="8" fill="#fff"/>
+                    <path d="M25 30 Q25 40 40 45 H10 Q25 40 25 30" fill="#fff"/>
+                </svg>
+                <div class="post-meta">
+                    <div class="post-author">Estudante</div>
+                    <div class="post-date">${timeString}</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>${getRandomSchoolPost()}</p>
+                <div class="upload-section">
+                    <button class="upload-button">Adicionar Mídia</button>
+                </div>
+            </div>
+            <div class="reactions">
+                <button class="reaction-button" onclick="react(this)">
+                    ⭐ <span class="count">0</span>
+                </button>
+                <button class="reaction-button" onclick="react(this)">
+                    🎓 <span class="count">0</span>
+                </button>
+                <button class="reaction-button" onclick="react(this)">
+                    👏 <span class="count">0</span>
+                </button>
+            </div>
+        `;
+        
+        content.insertBefore(post, content.firstChild);
+        setTimeout(() => post.classList.add('visible'), 100);
+    }
+
+    function getRandomColor() {
+        const colors = ['#e74c3c', '#3498db', '#2ecc71', '#f1c40f', '#9b59b6'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function getRandomSchoolPost() {
+        const posts = [
+            "Meu novo projeto de matemática sobre geometria fractal!",
+            "Apresentação sobre literatura brasileira modernista",
+            "Experimento de química sobre reações exotérmicas",
+            "Maquete do sistema solar para a aula de geografia",
+            "Projeto de história sobre a Revolução Industrial"
+        ];
+        return posts[Math.floor(Math.random() * posts.length)];
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.post').forEach(post => {
+            post.classList.add('visible');
+        });
+    });
+
+    window.addEventListener('scroll', () => {
+        document.querySelectorAll('.post:not(.visible)').forEach(post => {
+            const rect = post.getBoundingClientRect();
+            if (rect.top <= window.innerHeight - 100) {
+                post.classList.add('visible');
+            }
+        });
+    });
+
+    particlesJS("particles-js", {
+        particles: {
+            number: { value: 100, density: { enable: true, value_area: 1000 } },
+            color: { value: "#3498db" },
+            shape: { type: "circle" },
+            opacity: { value: 0.6, random: true },
+            size: { value: 4, random: true },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#2c3e50",
+                opacity: 0.2,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 3,
+                direction: "none",
+                random: true,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "bubble" },
+                onclick: { enable: true, mode: "repulse" },
+                resize: true
+            },
+            modes: {
+                bubble: {
+                    distance: 250,
+                    size: 6,
+                    duration: 2,
+                    opacity: 0.8,
+                    speed: 3
+                },
+                repulse: {
+                    distance: 200,
+                    duration: 0.4
+                }
+            }
+        },
+        retina_detect: true
+    });
+    </script>
+</body></html>

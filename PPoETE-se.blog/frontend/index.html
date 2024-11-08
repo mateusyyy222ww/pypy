@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Escolar Interativo</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #3498db;
+            --light: #ecf0f1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        .particle-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .post {
+            border-left: 5px solid var(--accent);
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            margin-right: 1rem;
+        }
+
+        .post-meta {
+            flex: 1;
+        }
+
+        .post-author {
+            font-weight: bold;
+        }
+
+        .post-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .media-item img, .media-item video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .reactions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .reaction-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            left: 2rem;
+            bottom: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+        }
+
+        .upload-section {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .upload-button {
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <div id="particles-js" class="particle-background"></div>
+    
+    <div class="header">
+        <h1>Blog p🌞ETE-se</h1>
+        <p>Veja os trabalhos</p>
+    </div>
+
+    <div class="content">
+        <!-- Seção para exibir os posts -->
+    </div>
+
+    <!-- Formulário para adicionar posts -->
+    <div class="upload-section">
+        <h3>Adicionar Novo Post</h3>
+        <input type="text" id="author" placeholder="Seu Nome"><br><br>
+        <textarea id="content" placeholder="Escreva algo sobre o post"></textarea><br><br>
+        <input type="file" id="media-file" accept="image/*,video/*" multiple><br><br>
+        <input type="text" id="media-caption" placeholder="Legenda da Mídia"><br><br>
+        <input type="password" id="post-password" placeholder="Senha para publicar"><br><br>
+        <button onclick="addNewPost()" class="upload-button">Postar</button>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">Mudar Tema</button>
+
+    <script>
+    // Ativação do efeito de partículas de fundo
+    particlesJS("particles-js", {
+        particles: {
+            number: { value: 100, density: { enable: true, value_area: 1000 } },
+            color: { value: "#3498db" },
+            shape: { type: "circle" },
+            opacity: { value: 0.6, random: true },
+            size: { value: 4, random: true },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#2c3e50",
+                opacity: 0.2,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 3,
+                direction: "none",
+                random: true,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "bubble" },
+                onclick: { enable: true, mode: "repulse" },
+                resize: true
+            },
+            modes: {
+                bubble: { distance: 250, size: 6, duration: 2, opacity: 0.8, speed: 3 },
+                repulse: { distance: 200, duration: 0.4 }
+            }
+        },
+        retina_detect: true
+    });
+
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+    }
+
+    async function loadPosts() {
+        const response = await fetch('http://127.0.0.1:5000/posts');
+        const posts = await response.json();
+        const content = document.querySelector('.content');
+        content.innerHTML = '';
+        posts.forEach(post => displayPost(post));
+    }
+
+    function displayPost(post) {
+        const content = document.querySelector('.content');
+        const postElement = document.createElement('div');
+        postElement.className = 'post';
+
+        let mediaHTML = '';
+        post.media.forEach(media => {
+            mediaHTML += displayMedia(media.media_url, media.media_type, media.caption);
+        });
+
+        postElement.innerHTML = `
+            <div class="post-header">
+                <div class="post-avatar"></div>
+                <div class="post-meta">
+                    <div class="post-author">${post.author}</div>
+                    <div class="post-date">${new Date(post.date).toLocaleString()}</div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>${post.content}</p>
+                <div class="media-grid">${mediaHTML}</div>
+            </div>
+            <div class="reactions">
+                <button class="reaction-button" onclick="react(${post.id}, 'star')">⭐ ${post.reactions_stars}</button>
+                <button class="reaction-button" onclick="react(${post.id}, 'graduation')">🎓 ${post.reactions_graduation}</button>
+                <button class="reaction-button" onclick="react(${post.id}, 'clap')">👏 ${post.reactions_clap}</button>
+            </div>
+            <input type="password" placeholder="Senha para deletar" id="delete-password-${post.id}">
+            <button onclick="deletePost(${post.id})" class="upload-button">Deletar</button>
+        `;
+        content.appendChild(postElement);
+    }
+
+    function displayMedia(url, type, caption) {
+        if (type === 'image') {
+            return `<div class="media-item"><img src="${url}" alt="${caption}"><div class="media-caption">${caption}</div></div>`;
+        } else if (type === 'video') {
+            return `<div class="media-item"><video controls src="${url}" width="100%"></video><div class="media-caption">${caption}</div></div>`;
+        }
+        return '';
+    }
+
+    async function addNewPost() {
+        const author = document.getElementById("author").value;
+        const content = document.getElementById("content").value;
+        const files = document.getElementById("media-file").files;
+        const caption = document.getElementById("media-caption").value;
+        const password = document.getElementById("post-password").value;
+
+        if (!author || !content) {
+            alert("Por favor, preencha os campos de nome e conteúdo.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("author", author);
+        formData.append("content", content);
+        formData.append("caption", caption);
+        formData.append("password", password);
+
+        for (const file of files) {
+            formData.append("media", file);
+        }
+
+        const response = await fetch('http://127.0.0.1:5000/posts', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (response.ok) {
+            const newPost = await response.json();
+            displayPost(newPost);
+        } else {
+            const error = await response.json();
+            alert(error.error);
+        }
+    }
+
+    async function deletePost(postId) {
+        const password = document.getElementById(`delete-password-${postId}`).value;
+        if (!password) {
+            alert("Por favor, insira a senha para deletar o post.");
+            return;
+        }
+
+        const response = await fetch(`http://127.0.0.1:5000/posts/${postId}`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: password })
+        });
+
+        if (response.ok) {
+            alert("Post deletado com sucesso!");
+            loadPosts();
+        } else {
+            const error = await response.json();
+            alert(error.error);
+        }
+    }
+
+    async function react(postId, reactionType) {
+        await fetch(`http://127.0.0.1:5000/posts/${postId}/react`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reaction: reactionType }),
+        });
+        loadPosts();
+    }
+
+    document.addEventListener("DOMContentLoaded", loadPosts);
+    </script>
+</body>
+</html>
